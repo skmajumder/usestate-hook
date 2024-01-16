@@ -2,18 +2,35 @@ import { useState } from "react";
 import "./App.css";
 
 const App = () => {
-  const [number1, setNumber1] = useState("");
-  const [number2, setNumber2] = useState("");
-  const [result, setResult] = useState("");
+  const [formData, setFormData] = useState({
+    number1: "",
+    number2: "",
+    result: "",
+  });
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    
+    setFormData((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
+  }
 
   function handleAdd() {
-    const num1 = parseFloat(number1);
-    const num2 = parseFloat(number2);
+    const num1 = parseFloat(formData.number1);
+    const num2 = parseFloat(formData.number2);
 
     if (!isNaN(num1) && !isNaN(num2)) {
-      setResult(`Result: ${num1 + num2}`);
+      setFormData((prevValue) => ({
+        ...prevValue,
+        result: `Result: ${num1 + num2}`,
+      }));
     } else {
-      setResult("Result: Please enter valid numbers");
+      setFormData((prevValue) => ({
+        ...prevValue,
+        result: "Result: Please enter valid numbers",
+      }));
     }
   }
 
@@ -23,22 +40,24 @@ const App = () => {
         type="number"
         className="d-block"
         placeholder="Number 1"
-        value={number1}
-        onChange={(e) => setNumber1(e.target.value)}
+        name="number1"
+        value={formData.number1}
+        onChange={handleInputChange}
       />
       <input
         type="number"
         className="d-block"
         placeholder="Number 2"
-        value={number2}
-        onChange={(e) => setNumber2(e.target.value)}
+        name="number2"
+        value={formData.number2}
+        onChange={handleInputChange}
       />
 
       <button type="button" onClick={handleAdd} className="d-block">
         Add
       </button>
 
-      <h2>{result}</h2>
+      <h2>{formData.result}</h2>
     </div>
   );
 };
